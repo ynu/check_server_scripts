@@ -44,9 +44,19 @@ printSeparator
 printNewline
 
 # 检查eyou_mail状态
+echo "检查eyou_mail状态"
+printSeparator
+echo "ssh root@${MAIL_SERVER_HOST} \"tail /usr/local/eyou/mail/log/mta.log\""
+printSeparator
+ssh root@${MAIL_SERVER_HOST} "tail /usr/local/eyou/mail/log/mta.log"
+printSeparator
 echo "ssh root@${MAIL_SERVER_HOST} eyou_mail watch"
 printSeparator
 ssh root@${MAIL_SERVER_HOST} eyou_mail watch
+printSeparator
+echo "ssh root@${MAIL_SERVER_HOST} /var/emdg/sbin/checkproc"
+printSeparator
+ssh root@${MAIL_SERVER_HOST} /var/emdg/sbin/checkproc
 printSeparator
 
 printNewline

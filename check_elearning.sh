@@ -8,7 +8,7 @@ ELEARNING_DOMAIN_NAME=elearning.ynu.edu.cn
 echo "检测Elearning Web相关服务是否正常"
 printSeparator
 echo "Elearning网络教学平台：http://elearning.ynu.edu.cn/"
-checkWebServerByTitle $ELEARNING_DOMAIN_NAME/meol/homepage/common/
+checkWebServerByTitle $ELEARNING_DOMAIN_NAME/meol/homepage//
 printSeparator
 printSeparator
 echo "教学资源库：http://elearning.ynu.edu.cn/moocresource/"
@@ -28,22 +28,20 @@ VIDEO_SERVER_HOST=113.55.12.57
 ORACLE_SERVER_HOST=113.55.12.58
 printSeparator
 echo "检测Web服务相关进程是否正常"
-echo "/root/tomcat_homepage status && /root/tomcat_mooc status && /root/apache2 status"
+echo -e "ssh root@$WEB_SERVER_HOST /root/tomcat_homepage status\nssh root@$WEB_SERVER_HOST /root/tomcat_mooc status\nssh root@$WEB_SERVER_HOST /root/apache2 status"
 ssh root@$WEB_SERVER_HOST "/root/tomcat_homepage status"
 ssh root@$WEB_SERVER_HOST "/root/tomcat_mooc status"
 ssh root@$WEB_SERVER_HOST "/root/apache2 status"
 printSeparator
 echo "检测流媒体服务器相关进程是否正常"
-echo "/root/tomcat_moocvideo status && service nginx status"
+echo -e "ssh root@$VIDEO_SERVER_HOST /root/tomcat_moocvideo status\nssh root@$VIDEO_SERVER_HOST service nginx status"
 ssh root@$VIDEO_SERVER_HOST "/root/tomcat_moocvideo status"
 ssh root@$VIDEO_SERVER_HOST "service nginx status"
 printSeparator
 echo "检测数据库服务器相关进程是否正常"
-echo "runuser -l oracle -c 'lsnrctl status' 2>/dev/null"
+echo -e "ssh root@$ORACLE_SERVER_HOST runuser -l oracle -c 'lsnrctl status' 2>/dev/null"
 ssh root@$ORACLE_SERVER_HOST "runuser -l oracle -c 'lsnrctl status' 2>/dev/null"
 printSeparator
 echo "检测数据库服务器备份定时任务是否正常"
-echo "runuser -l oracle -c 'crontab -l' 2>/dev/null"
+echo -e "ssh root@$ORACLE_SERVER_HOST runuser -l oracle -c 'crontab -l' 2>/dev/null"
 ssh root@$ORACLE_SERVER_HOST "runuser -l oracle -c 'crontab -l' 2>/dev/null"
-
-

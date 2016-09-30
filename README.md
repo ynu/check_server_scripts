@@ -8,15 +8,19 @@ This repository contains some scripts for checking health of servers of yunnan u
 
 ### How to use
 
+These operation can only be excuted by the adminstrators.
+
 ```bash
 git clone https://github.com/ynu/check_server_scripts.git
 cd check_server_scripts
-# Use ssh-copy-id to config server to access via PubkeyAuthentication
+# Use ssh-copy-id to config the client to access the server via PubkeyAuthentication
 ......
 # check dns
 ./check_dns.sh
 # check mail
 ./check_mail.sh
+# check elearning
+./check_elearning.sh
 ```
 
 ### License
