@@ -5,6 +5,7 @@
 # mail host ip
 MAIL_SERVER_HOST=202.203.208.32
 MAIL_SERVER_DOMAIN_NAME=webmail.ynu.edu.cn
+MAIL_SERVER_SLAVE_HOST=113.55.12.132
 
 # 检测邮箱Web相关服务是否正常
 echo "检测邮箱Web相关服务是否正常"
@@ -35,10 +36,30 @@ printSeparator
 
 printNewline
 
-# 检查mysql数据库实时备份是否正常
-echo "ssh root@${MAIL_SERVER_HOST} \"mysql -h 127.0.0.1 eyou_mail -s -e 'show slave status\G' | grep Slave\""
+# 检查备机mysql数据库实时备份是否正常
+echo "检查备机mysql数据库实时备份是否正常"
 printSeparator
-ssh root@${MAIL_SERVER_HOST} "mysql -h 127.0.0.1 eyou_mail -s -e 'show slave status\G' | grep Slave"
+echo "ssh root@${MAIL_SERVER_HOST} \"mysql -h 127.0.0.1 eyou_mail -s -e 'show master status\G' | grep 'Position'\""
+ssh root@${MAIL_SERVER_HOST} "mysql -h 127.0.0.1 eyou_mail -s -e 'show master status\G' | grep 'Position'"
+echo "ssh root@${MAIL_SERVER_SLAVE_HOST} \"mysql -h 127.0.0.1 eyou_mail -s -e 'show slave status\G' | grep 'Slave\|Exec_Master_Log_Pos'\""
+ssh root@${MAIL_SERVER_SLAVE_HOST} "mysql -h 127.0.0.1 eyou_mail -s -e 'show slave status\G' | grep 'Slave\|Exec_Master_Log_Pos'"
+printSeparator
+echo "Compare Position and Exec_Master_Log_Pos, check Slave_IO_Running/ Slave_SQL_Running is YES"
+printSeparator
+
+printNewline
+
+# 检查端口服务是否正常
+echo "检查端口服务是否正常"
+printSeparator
+echo "nc -zv ${MAIL_SERVER_HOST} 25"
+nc -zv ${MAIL_SERVER_HOST} 25
+echo "nc -zv ${MAIL_SERVER_HOST} 110"
+nc -zv ${MAIL_SERVER_HOST} 110
+echo "nc -zv ${MAIL_SERVER_SLAVE_HOST} 25"
+nc -zv ${MAIL_SERVER_SLAVE_HOST} 25
+echo "nc -zv ${MAIL_SERVER_SLAVE_HOST} 110"
+nc -zv ${MAIL_SERVER_SLAVE_HOST} 110
 printSeparator
 
 printNewline
